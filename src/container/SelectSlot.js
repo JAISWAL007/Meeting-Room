@@ -19,8 +19,7 @@ const timeSlot = [
   { id: 2, time: 45 },
   { id: 3, time: 60 },
   { id: 4, time: 75 },
-  { id: 5, time: 90 },
-  
+  { id: 5, time: 90 }
 ];
 
 export default class SelectSlot extends Component {
@@ -30,7 +29,8 @@ export default class SelectSlot extends Component {
 
   constructor(props) {
     super(props);
-      this.state = {
+    var params = this.props.navigation.state.params;
+    this.state = {
       isDateTimePickerVisible: false,
       bufferText: "00",
       startTime: "Start Time",
@@ -38,7 +38,10 @@ export default class SelectSlot extends Component {
       endTime: "End Time",
       showStartText: false,
       showEndText: false,
-      displayBuffer:false
+      displayBuffer: false,
+      bookingTime: params ? params.bookingTime : [],
+      roomName: params ? params.roomName : "Room",
+      roomCapacity: params ? params.roomCapacity : 0
     };
   }
 
@@ -51,15 +54,54 @@ export default class SelectSlot extends Component {
   };
 
   handleDatePicked = date => {
-    var hoursC = date.getHours(); //Current Hours
-    var minC = date.getMinutes(); //Current Minutes
+    //var hoursC = date.getHours(); //Current Hours
+    //var minC = date.getMinutes(); //Current Minutes
+    const newStartTime = moment(date).format("hh:mm a");
+    // const oldTime =new Date()
+    // var now = "04/09/2013 15:00:00";
+    // var then = "04/09/2013 14:20:30";
+
+    // const differ = moment
+    //   .utc(
+    //     moment(date, "DD/MM/YYYY HH:mm a").diff(
+    //       moment(oldTime, "DD/MM/YYYY HH:mm a")
+    //     )
+    //   )
+    //   .format("HH:mm a");
+
+    //   console.log('Differ',differ)
 
     this.setState({
       startTimeValue: date,
-      startTime: `${hoursC} : ${minC}`,
+      startTime: newStartTime,
       showStartText: true
     });
+
     this.hideDateTimePicker();
+    //this.checkAvailableTime(date);
+  };
+
+  checkAvailableTime = value => {
+    const { startTime, bookingTime } = this.state;
+    const compareTime = moment(value, "DD/MM/YYYY HH:mm");
+    if (bookingTime) {
+      bookingTime.map((data, index) => {
+        const start = moment(data.startTime, "DD/MM/YYYY HH:mm");
+        const end = moment(data.endTime, "DD/MM/YYYY HH:mm");
+
+        if (moment(start).isAfter(compareTime)) {
+          console.log(
+            "Is Same" +
+              moment.utc(moment(compareTime).diff(start)).format("mm"),
+            +(moment.utc(moment(compareTime).diff(start)).format("mm") / 15)
+          );
+        } else if (moment(compareTime).isBetween(start, end)) {
+          return console.log("IS Between");
+        } else {
+          console.log("IS None");
+        }
+      });
+    }
   };
 
   _keyExtractor = (item, index) => item.id;
@@ -69,7 +111,7 @@ export default class SelectSlot extends Component {
       .add(value, "m")
       .toDate();
 
-    var lastDate = `${endDate.getHours()} : ${endDate.getMinutes()}`;
+    var lastDate = moment(endDate).format("hh:mm a");
 
     this.setState({
       bufferText: value,
@@ -90,6 +132,7 @@ export default class SelectSlot extends Component {
   };
 
   render() {
+    const {roomCapacity, roomName,bufferText, startTime, endTime, showEndText, showStartText} = this.state
     return (
       <ImageBackground
         source={{
@@ -98,6 +141,11 @@ export default class SelectSlot extends Component {
         }}
         style={styles.imageBackground}
       >
+        <Text style={styles.titleStyle}>{ roomName}</Text>
+        <Text style={styles.bufferText}>
+          {constants.ROOM_CAPACITY}
+          { roomCapacity}
+        </Text>
         <Icon name="calendar-clock" size={150} color={colors.THEME_COLOR} />
         <Button title={constants.SELECT_DATE_TIME} onPress={null} />
 
@@ -108,7 +156,7 @@ export default class SelectSlot extends Component {
               style={[
                 styles.timeView,
                 {
-                  backgroundColor: this.state.showStartText
+                  backgroundColor:  showStartText
                     ? colors.THEME_COLOR
                     : colors.WHITE
                 }
@@ -118,29 +166,29 @@ export default class SelectSlot extends Component {
                 style={[
                   styles.timeText,
                   {
-                    color: this.state.showStartText
+                    color:  showStartText
                       ? colors.WHITE
                       : colors.THEME_COLOR
                   }
                 ]}
               >
-                {this.state.startTime}
+                { startTime}
               </Text>
             </TouchableOpacity>
-            {this.state.showStartText && (
+            { showStartText && (
               <Text style={{ textAlign: "center" }}>
                 {constants.START_TIME}
               </Text>
             )}
           </View>
-          <Text style={styles.bufferText}>{this.state.bufferText} min</Text>
+          <Text style={styles.bufferText}>{ bufferText} min</Text>
           <View>
             <TouchableOpacity
-            onPress= {()=> this.setState({displayBuffer: true})}
+              onPress={() => this.setState({ displayBuffer: true })}
               style={[
                 styles.timeView,
                 {
-                  backgroundColor: this.state.showEndText
+                  backgroundColor:  showEndText
                     ? colors.THEME_COLOR
                     : colors.WHITE
                 }
@@ -150,38 +198,47 @@ export default class SelectSlot extends Component {
                 style={[
                   styles.timeText,
                   {
-                    color: this.state.showEndText
+                    color:  showEndText
                       ? colors.WHITE
                       : colors.THEME_COLOR
                   }
                 ]}
               >
-                {this.state.endTime}{" "}
+                { endTime}{" "}
               </Text>
             </TouchableOpacity>
-            {this.state.showEndText && (
+            { showEndText && (
               <Text style={{ textAlign: "center" }}>{constants.END_TIME}</Text>
             )}
           </View>
         </View>
 
-        { this.state.showStartText &&
-        <>
-        <Text style={{ marginTop: 10 }}>{constants.SLOT_TIME}</Text>
-        <FlatList
-          data={timeSlot}
-          horizontal={false}
-          numColumns={3}
-          extraData={this.state}
-          keyExtractor={this._keyExtractor}
-          renderItem={this.renderTiming}
-        />
-         <TouchableOpacity style={styles.buttonStyle} 
-         onPress={() => this.props.navigation.navigate('MeetingRoom')}>
-        <Text>{constants.DONE}</Text>
-        </TouchableOpacity>
-        </>
-        }
+        { showStartText && (
+          <>
+            <Text style={{ marginTop: 10 }}>{constants.SLOT_TIME}</Text>
+            <FlatList
+              data={timeSlot}
+              horizontal={false}
+              numColumns={3}
+              extraData={this.state}
+              keyExtractor={this._keyExtractor}
+              renderItem={this.renderTiming}
+            />
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              onPress={
+                ()=> this.props.navigation.navigate("BookingRoomDetails",{
+                  roomCapacity: roomCapacity,
+                  roomName:  roomName,
+                  startTime: startTime,
+                  endTime: endTime,
+                  duration: bufferText
+                 })}
+            >
+              <Text>{constants.DONE}</Text>
+            </TouchableOpacity>
+          </>
+        )}
         <DateTimePicker
           mode={"time"}
           minimumDate={new Date()}
@@ -203,7 +260,14 @@ const styles = {
   },
   bufferText: {
     color: colors.BLACK,
+    marginBottom: 5,
     fontSize: 16
+  },
+  titleStyle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: colors.BLACK,
+    margin: 2
   },
   slotTouchable: {
     borderWidth: 1,
@@ -240,7 +304,7 @@ const styles = {
     borderRadius: 10,
     borderWidth: 1,
     borderColor: colors.THEME_COLOR,
-    width: "85%",
+    width: "90%",
     justifyContent: "center",
     alignItems: "center",
     padding: 10

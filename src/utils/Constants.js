@@ -26,6 +26,12 @@ export const constants = {
     START_TIME:'Start Time',
     END_TIME:'End Time',
     BOOK_ROOM:'Book Room',
-    SOME_ROOM_AVAILABLE:'Some time slot is available'
+    SOME_ROOM_AVAILABLE:'Some time slot is available',
+    ROOM_CAPACITY: 'room capacity ',
+    EMPLOYEE_NAME:'Employee Name',
+    EMPLOYEE_ID:'Employee Id',
+    DURATION:'Duration',
+    REASON:'Why you require?',
+    SEND_INVITE:'Send Invites'
 
 }

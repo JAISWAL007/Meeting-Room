@@ -9,6 +9,7 @@ import { BookARoom } from "../container/BookARoom";
 import LocationList from "../container/LocationList";
 import SelectSlot from "../container/SelectSlot";
 import MeetingRoom from "../container/MeetingRoom";
+import BookingRoomDetails from "../container/BookingRoomDetails";
 
 const AuthNavigator = createStackNavigator({
     Login : {    screen: LoginScreen },
@@ -21,7 +22,8 @@ const PostAuthNavigation = createStackNavigator({
     BookARoom : { screen : BookARoom},
     LocationList : { screen : LocationList},
     SelectSlot:{ screen : SelectSlot},
-    MeetingRoom: { screen : MeetingRoom }
+    MeetingRoom: { screen : MeetingRoom },
+    BookingRoomDetails: { screen : BookingRoomDetails}
 });
 
 const AppNavigator = createSwitchNavigator({

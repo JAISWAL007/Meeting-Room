@@ -5,14 +5,96 @@ import { colors } from "../utils/Colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const arrayOfMeetingRoom = [
-  { id: 0, room: "Meeting Room 1", available: true },
-  { id: 1, room: "Meeting Room 2", available: false },
-  { id: 2, room: "Meeting Room 3", available: true },
-  { id: 3, room: "Meeting Room 4", available: false },
-  { id: 4, room: "Meeting Room 5", available: true },
-  { id: 5, room: "Conference Room 1", available: true },
-  { id: 6, room: "Conference Room 2", available: false },
-  { id: 7, room: "Conference Room 3", available: false }
+  {
+    id: 0,
+    room: "Meeting Room 1",
+    available: true,
+    capacity: 3,
+    bookingTime: [
+      {
+        startTime: "Tue Aug 13 2019 13:00:59 GMT+0530 (India Standard Time)",
+        endTime: "Tue Aug 13 2019 13:15:59 GMT+0530 (India Standard Time)"
+      },
+      {
+        startTime: "Tue Aug 13 2019 15:00:59 GMT+0530 (India Standard Time)",
+        endTime: "Tue Aug 13 2019 15:45:59 GMT+0530 (India Standard Time)"
+      },
+      {
+        startTime: "Tue Aug 13 2019 18:00:59 GMT+0530 (India Standard Time)",
+        endTime: "Tue Aug 13 2019 18:30:59 GMT+0530 (India Standard Time)"
+      },
+      {
+        startTime: "Tue Aug 13 2019 18:30:59 GMT+0530 (India Standard Time)",
+        endTime: "Tue Aug 13 2019 18:45:59 GMT+0530 (India Standard Time)"
+      }
+    ]
+  },
+  {
+    id: 1,
+    room: "Meeting Room 2",
+    available: false,
+    capacity: 3,
+    bookingTime: [
+      {
+        startTime: new Date(),
+        endTime: "Tue Aug 13 2019 14:15:59 GMT+0530 (India Standard Time)"
+      },
+      {
+        startTime: "Tue Aug 13 2019 16:00:59 GMT+0530 (India Standard Time)",
+        endTime: "Tue Aug 13 2019 16:45:59 GMT+0530 (India Standard Time)"
+      },
+      {
+        startTime: "Tue Aug 13 2019 19:00:59 GMT+0530 (India Standard Time)",
+        endTime: "Tue Aug 13 2019 19:30:59 GMT+0530 (India Standard Time)"
+      },
+      {
+        startTime: "Tue Aug 13 2019 19:30:59 GMT+0530 (India Standard Time)",
+        endTime: "Tue Aug 13 2019 19:45:59 GMT+0530 (India Standard Time)"
+      }
+    ]
+  },
+  {
+    id: 2,
+    room: "Meeting Room 3",
+    capacity: 3,
+    available: true,
+    bookingTime: []
+  },
+  {
+    id: 3,
+    room: "Meeting Room 4",
+    capacity: 4,
+    available: false,
+    bookingTime: []
+  },
+  {
+    id: 4,
+    room: "Meeting Room 5",
+    capacity: 4,
+    available: true,
+    bookingTime: []
+  },
+  {
+    id: 5,
+    room: "Conference Room 1",
+    capacity: 8,
+    available: true,
+    bookingTime: []
+  },
+  {
+    id: 6,
+    room: "Conference Room 2",
+    capacity: 10,
+    available: false,
+    bookingTime: []
+  },
+  {
+    id: 7,
+    room: "Conference Room 3",
+    capacity: 12,
+    available: false,
+    bookingTime: []
+  }
 ];
 
 class MeetingRoom extends Component {
@@ -26,12 +108,19 @@ class MeetingRoom extends Component {
   renderItems = ({ item }) => {
     return (
       <TouchableOpacity
-        onPress={() => this.props.navigation.navigate('SelectSlot')}
+        onPress={() =>
+          this.props.navigation.navigate("SelectSlot", {
+            bookingTime: item.bookingTime,
+            roomName: item.room,
+            roomCapacity: item.capacity
+          })
+        }
         style={[
           styles.slotTouchable,
           { borderColor: item.available ? colors.GREEN : colors.YELLOW }
         ]}
       >
+        <Text style = {{position:'absolute', top:5, right:5, }}>Cp {item.capacity}</Text>
         <Icon
           name={item.available ? "home-city-outline" : "home-alert"}
           size={50}
