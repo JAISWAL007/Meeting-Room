@@ -232,7 +232,8 @@ export default class SelectSlot extends Component {
                   roomName:  roomName,
                   startTime: startTime,
                   endTime: endTime,
-                  duration: bufferText
+                  duration: bufferText,
+                  onCancel:false
                  })}
             >
               <Text>{constants.DONE}</Text>

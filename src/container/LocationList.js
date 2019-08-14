@@ -54,22 +54,22 @@ const data = [
   }
 ];
 export default class LocationList extends Component {
-  static navigationOptions = {
-    title: constants.MEETING_ROOM,
-    headerLeft: null
+  static navigationOptions = ({navigation} ) => {
+    return {
+      title: constants.LOCATION,
+      headerLeft: navigation.state.params ? 
+       navigation.state.params.backKey : null 
+      }
+      // headerLeft: navigation.state.params ? 
+      // navigation.state.params.backKey && { 
+      //   title:'back'
+      // }
+      // : null
   };
 
   state = {
     activeSections: []
   };
-
-  //   _renderSectionTitle = section => {
-  //     return (
-  //       <View >
-  //         <Text>{'section.content1'}</Text>
-  //       </View>
-  //     );
-  //   };
 
   _renderHeader = section => {
     return (
@@ -95,7 +95,7 @@ export default class LocationList extends Component {
   renderItems = ({ item }) => {
     return (
       <TouchableOpacity style={styles.subTextStyle}
-      onPress = {()=> this.props.navigation.navigate('SelectSlot')}>
+      onPress = {()=> this.props.navigation.navigate('MeetingRoom')}>
         <Text style={{ color: colors.WHITE, fontSize: 14 }}>{item.area}</Text>
       </TouchableOpacity>
     );

@@ -32,7 +32,8 @@ class BookingRoomDetails extends Component {
       roomName,
       startTime,
       endTime,
-      duration
+      duration,
+      onCancel
     } = this.state.getParams;
     return (
       <View style={styles.container}>
@@ -42,12 +43,15 @@ class BookingRoomDetails extends Component {
           {roomCapacity}
         </Text>
         <View style={styles.cardBlockView}>
-            {this.renderEmployeeDetails(constants.EMPLOYEE_NAME, "Abhishek Jaiswal")}
-            {this.renderEmployeeDetails(constants.EMPLOYEE_ID, "3295")}
-            {this.renderEmployeeDetails(constants.START_TIME, startTime)}
-            {this.renderEmployeeDetails(constants.END_TIME, endTime)}
-            {this.renderEmployeeDetails(constants.DURATION, duration)}
-       
+          {this.renderEmployeeDetails(
+            constants.EMPLOYEE_NAME,
+            "Abhishek Jaiswal"
+          )}
+          {this.renderEmployeeDetails(constants.EMPLOYEE_ID, "3295")}
+          {this.renderEmployeeDetails(constants.START_TIME, startTime)}
+          {this.renderEmployeeDetails(constants.END_TIME, endTime)}
+          {this.renderEmployeeDetails(constants.DURATION, duration)}
+
           <View style={styles.rowView}>
             <Text style={styles.keyText}>{constants.REASON} - </Text>
             <TextInput
@@ -93,15 +97,19 @@ class BookingRoomDetails extends Component {
         </View>
         <TouchableOpacity
           style={styles.buttonStyle}
-          onPress={() =>
-            this.props.navigation.navigate("BookingRoomDetails", {
-              roomCapacity: this.state.roomCapacity,
-              roomName: this.state.roomName
-            })
-          }
+          onPress={() => this.props.navigation.navigate("PreviousBookRoom")}
         >
           <Text>{constants.DONE}</Text>
         </TouchableOpacity>
+
+        {onCancel && (
+          <TouchableOpacity
+            style={[styles.buttonStyle, { marginTop: 10 }]}
+            onPress={() => null}
+          >
+            <Text>{constants.CANCEL}</Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   }

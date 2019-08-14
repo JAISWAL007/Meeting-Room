@@ -17,7 +17,7 @@ export const constants = {
     OTP_TEXT:'Please type verification code sent',
     BOOKING_ROOM:'Available Meeting Room',
     OCCUPIED_ROOM:'Occupied Meeting Room',
-    MEETING_ROOM:'Meeting Room',
+    MEETING_ROOM:'Room',
     SELECT_A_LOCATION:'Select a location to book a meeting room',
     SELECT_A_MEETING_ROOM:'Select a meeting room',
     TIMING:'Timing',
@@ -32,6 +32,8 @@ export const constants = {
     EMPLOYEE_ID:'Employee Id',
     DURATION:'Duration',
     REASON:'Why you require?',
-    SEND_INVITE:'Send Invites'
+    SEND_INVITE:'Send Invites',
+    LOCATION:'Location',
+    CANCEL:'C A N C E L'
 
 }

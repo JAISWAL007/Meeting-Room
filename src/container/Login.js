@@ -30,7 +30,7 @@ class Login extends React.Component {
   };
 
   onPressEvent = () => {
-    this.props.navigation.navigate("Registration");
+    this.props.navigation.navigate("PreviousBookRoom");
   };
 
   onChangeValue(name) {

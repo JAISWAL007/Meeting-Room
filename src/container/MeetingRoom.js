@@ -120,13 +120,13 @@ class MeetingRoom extends Component {
           { borderColor: item.available ? colors.GREEN : colors.YELLOW }
         ]}
       >
-        <Text style = {{position:'absolute', top:5, right:5, }}>Cp {item.capacity}</Text>
+        <Text style={styles.topText}>Cp {item.capacity}</Text>
         <Icon
           name={item.available ? "home-city-outline" : "home-alert"}
           size={50}
           color={item.available ? colors.GREEN : colors.THEME_COLOR}
         />
-        <Text style={[styles.bufferText, { fontWeight: "700" }]}>
+        <Text style={[styles.bufferText, { fontWeight: "400" }]}>
           {item.room}
         </Text>
         <Text style={[styles.bufferText, { color: colors.GRAY }]}>
@@ -157,7 +157,14 @@ const styles = {
   container: {
     flex: 1,
     alignItems: "center",
-    padding: "3%"
+    padding: "3%",
+    backgroundColor: "#f7f7f7"
+  },
+  topText: {
+    position: "absolute",
+    top: 5,
+    right: 5,
+    color: colors.GRAY
   },
   bufferText: {
     color: colors.BLACK,
@@ -165,16 +172,25 @@ const styles = {
     textAlign: "center"
   },
   slotTouchable: {
-    borderWidth: 1,
+    borderWidth: 2,
     width: "45%",
     height: 150,
+    backgroundColor: "#fff",
     padding: 10,
     margin: 8,
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "center",
     borderColor: colors.THEME_COLOR,
-    borderRadius: 15
+    borderRadius: 15,
+    elevation: 5,
+    //borderWidth: 1,
+    //borderColor: "#ddd",
+    borderBottomWidth: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2
   }
 };
 
